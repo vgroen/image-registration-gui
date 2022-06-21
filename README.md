@@ -16,7 +16,7 @@ nix build .#ir-gui
 nix run .#ir-gui
 ```
 
-Otherwise, install the required python packages and run `src/main.py` or download the pre-built executable.
+Otherwise, install the required python packages and run `src/main.py`.
 
 **Dependencies**
 - python 3.9
@@ -28,5 +28,5 @@ Otherwise, install the required python packages and run `src/main.py` or downloa
     - pyqt5
 
 
-Please know that these methods have not yet been tested, only the Nix flake method has.
+Please know that this method has not yet been tested, only the Nix flake method has.
 
