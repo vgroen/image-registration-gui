@@ -11,9 +11,9 @@ _The corresponding research paper can be found here: [Improving Image Registrati
 When using [NixOS](https://nixos.org/) with flake support, this application can easily be built and ran from source by using
 
 ```shell
-nix build .#ir-gui
+nix build
 # Or
-nix run .#ir-gui
+nix run
 ```
 
 Otherwise, install the required python packages and run `src/main.py`.

@@ -1,4 +1,6 @@
 {
+  # Flake setup from:
+  #  https://github.com/nix-gui/nix-gui
   description = "Image Registration GUI";
 
   inputs = {
@@ -16,7 +18,7 @@
         python = pkgs.python39;
         pythonPackages = python.pkgs;
       in {
-        packages."${pname}" = pkgs.callPackage (
+        packages.${pname} = pkgs.callPackage (
           { stdenv, lib }:
           pythonPackages.buildPythonPackage rec {
             inherit pname version;
@@ -42,27 +44,33 @@
           }
         ) { };
 
-        defaultPackage = self.packages."${system}"."${pname}";
+        packages.default = self.packages.${system}.${pname};
+        defaultPackage = self.packages.${system}.default;
 
-        apps = {
-          "${pname}" = flake-utils.lib.mkApp {
-            drv = self.packages."${system}"."${pname}";
+        apps = rec {
+          ${pname} = flake-utils.lib.mkApp {
+            drv = self.packages.${system}.${pname};
           };
         };
 
-        defaultApp = self.apps."${system}"."${pname}";
+        apps.default = self.apps.${system}.${pname};
+        defaultApp = self.apps.${system}.default;
 
-        devShell = pkgs.mkShell {
-          QT_PLUGIN_PATH = "${pkgs.qt5.qtbase}/${pkgs.qt5.qtbase.qtPluginPrefix}";
+        devShells = {
+          default = pkgs.mkShell {
+            QT_PLUGIN_PATH = "${pkgs.qt5.qtbase}/${pkgs.qt5.qtbase.qtPluginPrefix}";
 
-          nativeBuildInputs = [
-            python
-          ];
+            nativeBuildInputs = [
+              python
+            ];
 
-          inputsFrom = [
-            self.packages."${system}"."${pname}"
-          ];
+            inputsFrom = [
+              self.packages.${system}.${pname}
+            ];
+          };
         };
+
+        devShell = self.devShells.${system}.default;
       }
     );
 }
